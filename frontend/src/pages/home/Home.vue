@@ -1,5 +1,7 @@
 <template>
-  <h1>YOOOOOOOOOOOOOOo</h1>
+  <div class="container">
+    <h1 class="texto">YO</h1>
+  </div>
 </template>
 
 <script>
@@ -10,7 +12,7 @@ export default {
 </script>
 
 <style lang="stylus">
-  h1
-    color 'red'
-    background 'yellow'
+.texto
+  color red
+  background yellow
 </style>
