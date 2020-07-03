@@ -1,7 +1,10 @@
 <template>
-  <div class="container">
-    <h1 class="texto">YO</h1>
-  </div>
+  <md-empty-state
+      md-icon="devices_other"
+      md-label="Plataforma de feedbacks"
+      md-description="">
+      <md-button to="/feedback" class="md-primary md-raised">Começar a enviar</md-button>
+    </md-empty-state>
 </template>
 
 <script>

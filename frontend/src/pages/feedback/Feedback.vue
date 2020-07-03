@@ -1,43 +1,43 @@
 <template>
-  <!--<md-tabs class="md-accent" md-alignment="right">
-      <md-tab id="tab-home" md-label="Home"></md-tab>
-      <md-tab id="tab-pages" md-label="Pages"></md-tab>
-      <md-tab id="tab-posts" md-label="Posts"></md-tab>
-      <md-tab id="tab-favorites" md-label="Favorites"></md-tab>
-    </md-tabs>
--->
   <div>
-    <md-steppers>
-      <md-step id="primeiro" md-label="Identificação">
-        <form>
-          <md-field :class="validaUsuarioClasse">
-            <md-icon>lock</md-icon>
-            <label>ID do usuário</label>
-            <md-input v-model="submissao.pessoa_id" maxlength="12"></md-input>
-            <span class="md-error">Digite o ID completo</span>
-          </md-field>
+    <div class="md-layout md-alignment-center-center">
+      <div class="md-layout-item md-large-size-50 md-medium-size-100 md-xsmall-size-100">
 
-          <md-field :class="validaData">
-            <md-icon>event</md-icon>
-            <label>Data</label>
-            <md-input placeholder="dd/mm/aaaa" v-model="submissao.data"></md-input>
-            <span class="md-error"></span>
-          </md-field>
+        <md-steppers :md-active-step.sync="stepperId">
+          <md-step id="identificacao" md-label="Identificação">
+            <form>
+              <md-field :class="validaUsuarioClasse">
+                <md-icon>lock</md-icon>
+                <label>ID do usuário</label>
+                <md-input v-model="submissao.pessoa_id" maxlength="12"></md-input>
+                <span class="md-error">Digite o ID completo</span>
+              </md-field>
 
-          <md-field>
-            <md-icon>event</md-icon>
-            <label>Semana do ano</label>
-            <md-input v-model="submissao.semana" type="number"></md-input>
-            <span class="md-helper-text">Semana atual é {{semanaInfo.atual}}. Vai de {{semanaInfo.dataInicio}} até {{semanaInfo.dataFim}}. <a target="_blank" href="https://www.calendario-365.com.br/numero-da-semana.html">Conferir aqui</a>.</span>
-          </md-field>
-        </form>
-      </md-step>
+              <md-field :class="validaData">
+                <md-icon>event</md-icon>
+                <label>Data</label>
+                <md-input placeholder="dd/mm/aaaa" v-model="submissao.data"></md-input>
+                <span class="md-error"></span>
+              </md-field>
 
-      <md-step id="segundo" md-label="Atividades">
-        
-      </md-step>
-    </md-steppers>
+              <md-field>
+                <md-icon>event</md-icon>
+                <label>Semana do ano</label>
+                <md-input v-model="submissao.semana" type="number"></md-input>
+                <span class="md-helper-text">Semana atual é {{semanaInfo.atual}}. Vai de {{semanaInfo.dataInicio}} até {{semanaInfo.dataFim}}. <a target="_blank" href="https://www.calendario-365.com.br/numero-da-semana.html">Conferir aqui</a>.</span>
+              </md-field>
+              <md-button @click="btnIdentificacaoClick()" class="md-raised md-primary">Próximo</md-button>
+            </form>
+          </md-step>
+
+          <md-step id="atividades" md-label="Atividades">
+            
+          </md-step>
+        </md-steppers>
+
+      </div>  
     </div>
+  </div>
 </template>
 
 <script>
@@ -47,6 +47,7 @@
   export default {
     name: 'Login',
     data: () => ({
+      stepperId : 'identificacao',
       submissao:{
         pessoa_id:"",
         semana: 0,
@@ -83,6 +84,9 @@
       }
     },
     methods: {
+      btnIdentificacaoClick(){
+        this.stepperId = 'atividades'
+      },
       semanaAno(dataComp = new Date()){
         let diaInicioSemana = new Date(dataComp.getFullYear(),0,-(new Date(dataComp.getFullYear(),0,1).getDay()-2))
         let semanaAno = ((dataComp - diaInicioSemana) / 86400000) / 7 +1
