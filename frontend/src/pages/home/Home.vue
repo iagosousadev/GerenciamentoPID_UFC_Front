@@ -1,9 +1,9 @@
 <template>
   <md-empty-state
-      md-icon="devices_other"
+      md-icon="fact_check"
       md-label="Plataforma de feedbacks"
-      md-description="">
-      <md-button to="/feedback" class="md-primary md-raised">Começar a enviar</md-button>
+      md-description="Comece a enviar seus feedbacks semanais numa interface nova, amigável e simplificada!">
+      <md-button to="/feedback" class="md-primary md-raised">Começar</md-button>
     </md-empty-state>
 </template>
 

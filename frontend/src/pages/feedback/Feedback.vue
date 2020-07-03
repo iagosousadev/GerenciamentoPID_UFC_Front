@@ -7,7 +7,7 @@
           <md-step id="identificacao" md-label="Identificação">
             <form>
               <md-field :class="validaUsuarioClasse">
-                <md-icon>lock</md-icon>
+                <md-icon>account_box</md-icon>
                 <label>ID do usuário</label>
                 <md-input v-model="submissao.pessoa_id" maxlength="12"></md-input>
                 <span class="md-error">Digite o ID completo</span>
@@ -17,7 +17,7 @@
                 <md-icon>event</md-icon>
                 <label>Data</label>
                 <md-input placeholder="dd/mm/aaaa" v-model="submissao.data"></md-input>
-                <span class="md-error"></span>
+                <span class="md-error">Data inválida. Use dd/mm/aaaa.</span>
               </md-field>
 
               <md-field>
@@ -79,7 +79,7 @@
       },
       validaData () {
         return {
-          'md-invalid': !(String(this.submissao.data).indexOf("/") > -1 && String(this.submissao.data).indexOf("/",String(this.submissao.data).indexOf("/")) > -1)
+          'md-invalid': !(String(this.submissao.data).indexOf("/") > -1 && String(this.submissao.data).indexOf("/",String(this.submissao.data).indexOf("/")+1) > -1)
         }
       }
     },
