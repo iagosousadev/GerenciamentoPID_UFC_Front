@@ -12,13 +12,14 @@
                 <md-input v-model="submissao.pessoa_id" maxlength="12"></md-input>
                 <span class="md-error">Digite o ID completo</span>
               </md-field>
-
-              <md-field :class="validaData">
+              
+              <!--<md-field :class="validaData">
                 <md-icon>event</md-icon>
                 <label>Data</label>
+                
                 <md-input placeholder="dd/mm/aaaa" v-model="submissao.data"></md-input>
                 <span class="md-error">Data inválida. Use dd/mm/aaaa.</span>
-              </md-field>
+              </md-field>--->
 
               <md-field>
                 <md-icon>event</md-icon>
@@ -30,9 +31,46 @@
             </form>
           </md-step>
 
+
+
           <md-step id="atividades" md-label="Atividades">
+
+            <div v-for="(atividade, atvId) in atividades_data" v-bind:key="atvId">
+
+              <md-datepicker v-model="atividade.data" >
+                <label>Data</label>
+              </md-datepicker>
+
+              <md-field :class="validaIntervaloHrs">
+                <md-icon>access_alarm</md-icon>
+                <label>Duração</label>
+                <md-input v-model="atividade.duracao" maxlength="5"></md-input>
+                <span @click="showFormStatus()" class="md-error">Formato: hh:mm</span>
+              </md-field>
+
+              <div>
+                <md-chips v-model="atividade.ids" md-placeholder="@idProfessor"></md-chips>
+              </div>
+
+              <md-field>
+                <label>Descrição</label>
+                <md-textarea v-model="atividade.descricao" md-autogrow></md-textarea>
+              </md-field>
+
+              <md-button v-on:click="atividades_data.splice(atvId, 1)" class="md-accent">Remover</md-button>
+
+              <md-divider></md-divider>
+            </div>
+
+            <md-button v-on:click="addNewAtividade()" class="md-fab md-primary">
+              <md-icon>add</md-icon>
+            </md-button>
+
             
+
           </md-step>
+
+
         </md-steppers>
 
       </div>  
@@ -47,6 +85,8 @@
   export default {
     name: 'Login',
     data: () => ({
+      atividades_data: [],
+      teste: [],
       stepperId : 'identificacao',
       submissao:{
         pessoa_id:"",
@@ -63,7 +103,10 @@
     beforeMount(){
       let hoje = new Date()
       this.$data.submissao.semana = Math.floor(this.semanaAno())
-      this.$data.submissao.data = (hoje.getDate()<10?"0":"")+hoje.getDate()+"/"+(hoje.getMonth()<9?"0":"")+(hoje.getMonth()+1)+"/"+hoje.getFullYear()
+      
+      // this.$data.submissao.data = (hoje.getDate()<10?"0":"")+hoje.getDate()+"/"+(hoje.getMonth()<9?"0":"")+(hoje.getMonth()+1)+"/"+hoje.getFullYear()
+      this.$data.submissao.data = hoje.getFullYear()+"-"+ (hoje.getMonth()<9?"0":"")+(hoje.getMonth()+1) +"-" + (hoje.getDate()<10?"0":"")+hoje.getDate()
+      
       this.$data.semanaInfo.atual = Math.floor(this.semanaAno())
       let datas = this.getSemanaInicioFim()
       let diaInicio = (datas[0].getDate()<10?"0":"")+datas[0].getDate()+"/"+(datas[0].getMonth()<9?"0":"")+(datas[0].getMonth()+1)
@@ -79,11 +122,32 @@
       },
       validaData () {
         return {
-          'md-invalid': !(String(this.submissao.data).indexOf("/") > -1 && String(this.submissao.data).indexOf("/",String(this.submissao.data).indexOf("/")+1) > -1)
+          // 'md-invalid': !(String(this.submissao.data).indexOf("/") > -1 && String(this.submissao.data).indexOf("/",String(this.submissao.data).indexOf("/")+1) > -1)
+          'md-invalid': !(String(this.submissao.data).indexOf("-") > -1 && String(this.submissao.data).indexOf("-",String(this.submissao.data).indexOf("-")+1) > -1)
         }
+      },
+      validaIntervaloHrs(t){
+        console.log(t);
+        return{
+          'md-invalid':true
+        }
+        
       }
     },
     methods: {
+      addNewAtividade(){
+        this.atividades_data.push(
+          {
+            data:new Date(),
+            duracao:'01:00',
+            ids:[],
+            descricao:'',
+          }
+        )
+      },
+      showFormStatus(){
+        console.log("Atividades=",this.atividades_data);
+      },
       btnIdentificacaoClick(){
         this.stepperId = 'atividades'
       },
